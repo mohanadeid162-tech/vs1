@@ -116,7 +116,7 @@ class AsyncTLSClient:
             await self._session.close()
             self._session = None
 
-MAX_PRODUCT_PAGES = 1
+MAX_PRODUCT_PAGES = 0
 
 def _is_cf_body(body: str) -> bool:
     lo = body.lower()
