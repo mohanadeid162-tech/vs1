@@ -128,7 +128,7 @@ import time as _time_mod
 _product_cache: dict = {}
 _CACHE_TTL = 3600  # ساعة واحدة
 
-async def find_cheapest_product(client: AsyncTLSClient, shop_url: str, min_price: float = 0.50):
+async def find_cheapest_product(client: AsyncTLSClient, shop_url: str, min_price: float = 0.01):
     # تحقق من الـ cache أولاً
     cached = _product_cache.get(shop_url)
     if cached and (_time_mod.time() - cached[-1]) < _CACHE_TTL:
