@@ -1062,3 +1062,7 @@ async def run_checkout_for_card_async(shop_url: str, card_entry: str, proxy_url:
         return result
     finally:
         await client.close()
+
+async def check_card_async(client: AsyncTLSClient, card: str, site: str) -> CheckResult:
+    """Async wrapper for run_checkout_for_card_async."""
+    return await run_checkout_for_card_async(site, card, None)
