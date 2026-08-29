@@ -1696,20 +1696,23 @@ def load_sites_from_file(path: Path) -> List[str]:
 
 # ──────────────────────── Bot-facing async entry point ───────────────
 
-async def main(card_entry: str, user_id: int):
+async def main(card_entry: str, user_id: int, site_url: str = None):
     """
     Called by cmd.py and response.py.
     Returns: (success: bool, result: str, amount: str, proxy_hash: str)
     """
     from GATES.AUTOSHOPIFY.AUTOSH.shopify_db import shopify_db
 
-    # ── load sites from site.txt ──────────────────────────────────────
-    try:
-        sites = load_sites_from_file(SITE_TXT)
-    except FileNotFoundError:
-        return False, "No site.txt found — create GATES/AUTOSHOPIFY/AUTOSH/site.txt", "0", "None"
-    except Exception as e:
-        return False, str(e), "0", "None"
+    # ── use site from parameter or fallback to site.txt ──────────────
+    if site_url:
+        sites = [site_url]
+    else:
+        try:
+            sites = load_sites_from_file(SITE_TXT)
+        except FileNotFoundError:
+            return False, "No site provided and site.txt not found", "0", "None"
+        except Exception as e:
+            return False, str(e), "0", "None"
 
     # ── load user proxies ─────────────────────────────────────────────
     proxies_raw = await shopify_db.get_proxies(user_id)
